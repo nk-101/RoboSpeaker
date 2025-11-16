@@ -1,28 +1,22 @@
-'''
-import os
+import win32com.client   # Imports the Windows Speech API (SAPI) COM library
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("Welcome to RoboSpeaker 1.1 Created by Nidhi")
-    x=input("Enter what you want me to say:")
-    command=f"say {x}"
-    os.system(command)
-'''
-import pyttsx3
 
-if __name__ == '__main__':
-    print("Welcome to RoboSpeaker 1.1 Created by Nidhi")
-    
-    # Initialize the text-to-speech engine
-    engine = pyttsx3.init()
+    # Create a SAPI voice object (this is what actually speaks)
+    speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
     while True:
+        # Take input from user
+        x = input("Enter what you want me to say (q to quit): ").strip()
 
-        x = input("Enter what you want me to say: ")
-        if x=="q":
-            engine.say("bye bye friend")
-            engine.runAndWait()
-            break
+        # If user wants to quit
+        if x.lower() == "q":
+            speaker.Speak("bye bye friend")   # Speak goodbye
+            break                              # End program
 
-    # Initialize the text-to-speech engine
-        engine.say(x)
-        engine.runAndWait()
+        # If user types something (not empty)
+        if x:
+            speaker.Speak(x)                  # Speak the typed text
+        else:
+            print("Empty input — try again.") # Inform user if they typed nothing
